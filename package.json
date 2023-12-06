@@ -1,10 +1,10 @@
 {
-  "name": "no-react-app",
+  "name": "htmx-nav",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "dev": "nodemon --env-file=.env app.js",
+    "dev": "nodemon -e html,js --exec 'node  --env-file=.env  app.js'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,9 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.2",
-    "nunjucks": "^3.2.4",
-    "sqlite3": "^5.1.6"
+    "nunjucks": "^3.2.4"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

@@ -1,33 +1,35 @@
 const express = require("express")
 const app = express()
 
+
 const nunjucks = require('nunjucks');
-nunjucks.configure('views', {
+nunjucks.configure("views", {
     autoescape: true,
     express: app
 });
 
-// To serve static files such as images, CSS files, and JavaScript files, use the express.static built-in middleware function in Express.
-app.use(express.static("public"))
+app.use((req, res, next) => {
+    res.locals.currentUrl = req.url;
+    res.locals.useLayout = req.headers["hx-request"] !== "true";
+    next();
+})
 
-//To parse incoming requests with JSON payloads, use the express.json() middleware before your routes
-app.use(express.urlencoded({ extended: true }))
 
-// To parse the incoming requests with JSON payloads
-app.use(express.json())
-app.locals.db = require('./db');
+app.get("/", (req, res) => {
+    res.render("pages/home.html")
+})
 
-// Configure Nunjucks
+app.get("/users", (req, res) => {
+    res.render("pages/users.html")
+})
 
-// To use the template engine
-app.get('/', (req, res) => {
-    res.render('index.html', { title: 'Express Nunjucks Example' });
-});
+app.get("/posts", (req, res) => {
+    res.render("pages/posts.html")
+})
+app.get("/nav/:url", (req, res) => {
+    res.render("partials/sidenav.html", { url: req.params.url })
+})
 
-// app.get('/login', (req, res) => {
-//     res.render('accounts/login.html', { title: 'Express Nunjucks Example' });
-// });
-
-app.use(require('./routes/accounts'));
-
-app.listen(3000, () => console.info("Application running http://localhost:3000"))
+app.listen(3000, () => {
+    console.info(`Application running http://localhost:3000`)
+})
